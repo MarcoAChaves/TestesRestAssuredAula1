@@ -1,14 +1,19 @@
 package br.ce.wcaquino.rest;
 
 
+
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-
+import java.util.Arrays;
+import java.util.List;
+import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OlaMundoTest {
 
@@ -37,6 +42,31 @@ public class OlaMundoTest {
                 .get("https://stackoverflow.com/questions/67179242/noclassdeffounderror-getting-this-error-at-runtime")
         .then()
                 .statusCode(200);
+
+    }
+
+    //Método Hamcrest
+    @Test
+    public void devoConhecerMatchersHamcrest(){
+        assertThat ("Maria", Matchers.is("Maria"));
+        assertThat (128, Matchers.is(128));
+        assertThat (128, Matchers.isA(Integer.class));
+        assertThat (128d, Matchers.isA(Double.class));
+        assertThat(128d, Matchers.greaterThan(120d));
+        assertThat (128d, Matchers.lessThan(130d));
+
+        List <Integer> impares = Arrays.asList(1,3,5,7,9);
+        assertThat(impares, Matchers.hasSize(5));
+        assertThat(impares, Matchers.contains(1,3,5,7,9));
+        assertThat(impares, Matchers.containsInAnyOrder(1,3,5,9,7));
+        assertThat(impares, Matchers.hasItem(1));
+        assertThat(impares, Matchers.hasItems(1, 9));
+
+        assertThat("Marco", not("Marcos"), not ("Marcus"));
+        //assertThat("Marco", anyOf (is("Marcos"), is("mario")));
+        assertThat("Joaquina", allOf(startsWith("Joa"),endsWith("ina"), containsString("qui")));
+
+
 
     }
 }
