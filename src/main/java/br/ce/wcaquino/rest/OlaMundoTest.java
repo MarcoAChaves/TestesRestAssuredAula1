@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,9 @@ public class OlaMundoTest {
         assertThat(impares, Matchers.hasItems(1, 9));
 
         assertThat("Marco", not("Marcos"), not("Marcus"));
-        //assertThat("Marco", anyOf (is("Marcos"), is("mario")));
+//        assertThat("Marco", anyOf (is("Marcos"), is("mario")));
+        //assertThat("Marco", anyOf(containsString("Marco"),containsString("Marco")));
+        assertThat("Marcos", anyOf(CoreMatchers.is("Marcos"),CoreMatchers.is("Marcus")));
         assertThat("Joaquina", allOf(startsWith("Joa"), endsWith("ina"), containsString("qui")));
 
     }
