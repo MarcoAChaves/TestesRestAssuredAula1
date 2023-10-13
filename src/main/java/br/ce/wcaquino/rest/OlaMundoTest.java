@@ -21,7 +21,7 @@ public class OlaMundoTest {
 
     @Test
     public void testOlaMundo(){
-        Response response = RestAssured.request (Method.GET, "https://stackoverflow.com/questions/67179242/noclassdeffounderror-getting-this-error-at-runtime");
+        Response response = RestAssured.request (Method.GET, "http://restapi.wcaquino.me/ola");
         System.out.println(response.getBody().asString());
         System.out.println("Status code: " + response.statusCode());
 
@@ -31,17 +31,17 @@ public class OlaMundoTest {
 
     @Test
     public void devoConhecerOutrasFormasRestAssured() {
-        Response response = RestAssured.request (Method.GET, "https://stackoverflow.com/questions/67179242/noclassdeffounderror-getting-this-error-at-runtime");
+        Response response = RestAssured.request (Method.GET, "http://restapi.wcaquino.me/ola");
         ValidatableResponse validacao = response.then();
         validacao.statusCode(200);
 
-        RestAssured.get("https://stackoverflow.com/questions/67179242/noclassdeffounderror-getting-this-error-at-runtime").then().statusCode(200);
+        RestAssured.get("http://restapi.wcaquino.me/ola").then().statusCode(200);
         System.out.println("Status code: " + response.statusCode());
 
         //Usando um modo fluente
         given()
         .when()
-                .get("https://stackoverflow.com/questions/67179242/noclassdeffounderror-getting-this-error-at-runtime")
+                .get("http://restapi.wcaquino.me/ola")
         .then()
                 .statusCode(200);
 
@@ -77,11 +77,12 @@ public class OlaMundoTest {
     public void devoValidarBody() {
         given()
                 .when()
-                .get("https://stackoverflow.com/questions/67179242/noclassdeffounderror-getting-this-error-at-runtime")
+                .get("http://restapi.wcaquino.me/ola")
                 .then()
                 .statusCode(200)
-                .body(containsString("main"))
-                .body((Matcher<?>) is(not(nullValue())));
+                .body(CoreMatchers.is("Ola Mundo!"))
+                .body(containsString("Mundo"))
+                .body(CoreMatchers.is(not(nullValue())));
 
     }
 }
