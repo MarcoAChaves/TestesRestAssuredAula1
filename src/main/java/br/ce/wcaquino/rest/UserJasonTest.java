@@ -8,6 +8,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
@@ -79,6 +80,21 @@ public class UserJasonTest {
                 .then()
                 .statusCode(404)
                 .body("error", is("Usuário inexi stente"))
+        ;
+    }
+
+    @Test
+    public void devoVerificarListaRaiz(){
+        given()
+                .when()
+                .get("https://restapi.wcaquino.me/users")
+                .then()
+                .statusCode(200)
+                .body("$", hasSize(3))
+                .body("name", hasItems("João da Silva", "Maria Joaquina", "Ana Júlia"))
+                .body("age[1]", is(25))
+                .body("filhos.name", hasItem(Arrays.asList("Zezinho", "Luizinho")))
+                .body("salary", contains(1234.5677f, 2500, null))
         ;
     }
 }
