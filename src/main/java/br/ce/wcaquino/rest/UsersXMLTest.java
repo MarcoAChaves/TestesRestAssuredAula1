@@ -1,21 +1,26 @@
 package br.ce.wcaquino.rest;
-
-
-
-import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
-
-
-
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 
 public class UsersXMLTest {
+
+    @BeforeClass
+    public static void setup(){
+        baseURI = "https://restapi.wcaquino.me";
+        // port = 80;
+        // basePath = "/v2";
+
+    }
     @Test
     public void devoTrabalharComXml() {
+
+
         given()
                 .when()
+
                 .get("https://restapi.wcaquino.me/usersXML/3")
                 .then()
                 .statusCode(200)
@@ -29,7 +34,7 @@ public class UsersXMLTest {
     }
 
     @Test
-    public void devoTrabalharComXmlNoRaiz() {
+     public void devoTrabalharComXmlNoRaiz() {
         given()
                 .when()
                 .get("https://restapi.wcaquino.me/usersXML/3")
@@ -38,8 +43,8 @@ public class UsersXMLTest {
                 .rootPath("user")
                 .body("name", is("Ana Julia"))
                 .body("@id", is("3"))
-                .body("name.size()", is(2))
-                .detachRootPath("filhos")
+                .body("name.size()", is(1))
+                //.detachRootPath("user.filhos")
                 .body("filhos.name[0]", is("Zezinho"))
                 .body("filhos.name[1]", is("Luizinho"))
                 .appendRootPath("filhos")
@@ -97,7 +102,32 @@ public class UsersXMLTest {
                 .body(hasXPath("/users/user[last()]/name", is("Ana Julia")))
                 .body(hasXPath("count(/users/user/name[contains(., 'n')])", is("2")))
                 .body(hasXPath("//user[age < 24]/name", is("Ana Julia")))
-                .body(hasXPath("//user[age > 20 and age <  30]/name", is("Maria Joaquina")))
+                .body(hasXPath("//user[age > 20 and age <  30]/name", is("Maria Joaquina")));
+    }
+    @Test
+    public void atributosEstaticos() {
+
+
+        given()
+                .log().all()
+                .when()
+                .get("/usersXML/3")
+                .then()
+                .statusCode(200)
+
+                .rootPath("user")
+                .body("name", is("Ana Julia"))
+                .body("@id", is("3"))
+
+                .rootPath("user.filhos")
+                .body("name.size()", is(2))
+
+                .detachRootPath("filhos")
+                .body("filhos.name[0]", is("Zezinho"))
+                .body("filhos.name[1]", is("Luizinho"))
+                .appendRootPath("filhos")
+                .body("name", hasItem("Zezinho"))
+                .body("name", hasItems("Zezinho", "Luizinho"))
         ;
 
     }
