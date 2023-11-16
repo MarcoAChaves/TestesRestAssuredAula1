@@ -12,7 +12,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
-import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
