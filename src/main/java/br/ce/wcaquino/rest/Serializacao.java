@@ -1,8 +1,10 @@
 package br.ce.wcaquino.rest;
 
+import io.restassured.http.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.xml.bind.annotation.XmlValue;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,5 +74,24 @@ public class Serializacao {
         Assert.assertThat(usuarioInserido.getId(), notNullValue());
         Assert.assertEquals("Usuario deserializado", usuarioInserido.getName());
         Assert.assertThat(usuarioInserido.getAge(), is(35));
+    }
+
+    @Test
+    public void deveSalvarUsuarioViaXMLUsandoObjeto(){
+
+        User user = new User("Usuario XML", 40);
+
+        given ()
+                .log().all()
+                .contentType(ContentType.XML)
+                .body(user)
+                .when()
+                .post("https://restapi.wcaquino.me/usersXML")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("user.@id", is(notNullValue()))
+                .body("user.name", is ("Usuario XML"))
+                .body("user.age", is("40"));
     }
 }

@@ -1,20 +1,28 @@
 package br.ce.wcaquino.rest;
 
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+
+@XmlRootElement(name = "user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
+
 
     private String name;
     private Integer age;
     private Double Salary;
     private Long id;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", Salary=" + Salary +
-                ", id=" + id +
-                '}';
+    public User() {
+    }
+
+    public User(String name, Integer age) {
+        super();
+        this.name = name;
+        this.age = age;
     }
 
     public String getName() {
@@ -41,10 +49,7 @@ public class User {
         Salary = salary;
     }
 
-    public User(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
+
 
     /**
      * get field
@@ -62,5 +67,15 @@ public class User {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", Salary=" + Salary +
+                ", id=" + id +
+                '}';
     }
 }
