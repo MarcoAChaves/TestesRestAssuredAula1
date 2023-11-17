@@ -46,6 +46,6 @@ public class EnvioDadosTest {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .contentType(ContentType.XML );
+                .contentType(ContentType.XML);
     }
 }
