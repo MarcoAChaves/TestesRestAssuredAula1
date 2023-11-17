@@ -4,7 +4,7 @@ import io.restassured.http.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.xml.bind.annotation.XmlValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,5 +93,27 @@ public class Serializacao {
                 .body("user.@id", is(notNullValue()))
                 .body("user.name", is ("Usuario XML"))
                 .body("user.age", is("40"));
+    }
+
+    @Test
+    public void deveDeserializarXMLAoSalvarUsuario() {
+
+        User user = new User("Usuario XML", 40);
+
+        User usuarioInserido = given()
+                .log().all()
+                .contentType(ContentType.XML)
+                .body(user)
+                .when()
+                .post("https://restapi.wcaquino.me/usersXML")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract().body().as(User.class);
+
+        Assert.assertThat(usuarioInserido.getId(), notNullValue());
+        Assert.assertThat(usuarioInserido.getName(), is("Ususario XML"));
+        Assert.assertThat(usuarioInserido.getAge(), is(40));
+        Assert.assertThat(usuarioInserido.getSalary(), notNullValue());
     }
 }

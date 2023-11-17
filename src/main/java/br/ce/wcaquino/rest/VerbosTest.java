@@ -4,7 +4,6 @@ import io.restassured.http.ContentType;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.registerParser;
 import static org.hamcrest.CoreMatchers.*;
 
 public class VerbosTest {
