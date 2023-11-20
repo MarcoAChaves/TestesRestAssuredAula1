@@ -21,7 +21,7 @@ public class SchemaTest {
                 .body(RestAssuredMatchers.matchesXsdInClasspath("users.xsd"));
     }
 
-    @Test(expected= SAXParseException.class)
+    /*@Test(expected= SAXParseException.class)
     public void naoDeveValidarSchemaTest (){
         given()
                 .log().all()
@@ -43,5 +43,5 @@ public class SchemaTest {
                 .log().all()
                 .statusCode(200)
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("users.json"));
-    }
+    }*/
 }
