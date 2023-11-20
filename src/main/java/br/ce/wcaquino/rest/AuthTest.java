@@ -1,7 +1,11 @@
 package br.ce.wcaquino.rest;
 
+import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -85,6 +89,52 @@ public class AuthTest {
                 .statusCode(200)
                 .body("status", is("logado"));
     }
+
+    @Test
+    public void naoDeveAcessarSemSenha(){
+        given()
+                .log().all()
+                .when()
+                .get("https://restapi.wcaquino.me/basicauth")
+                .then()
+                .log().all()
+                .statusCode(401);
+    }
+
+    @Test
+    public void deveFazerAutenticacaoComTokenJWT(){
+
+        Map<String, String> login = new HashMap<String, String>();
+        login.put("email", "wagner@aquino");
+        login.put("senha", "123456");
+
+
+//Login na API
+// Receber o token
+        String token = given()
+                .log().all()
+                .body(login)
+                .contentType(ContentType.JSON)
+                .when()
+                .post("https://barrigarest.wcaquino.me/signin")
+                .then()
+                .log().all()
+                .statusCode(200)
+        .extract().path("token");
+
+        //Obter as contas
+        given()
+                .log().all()
+                //enviando token
+                .header("Authorization", "JWT", token)
+                .when()
+                .get("https://barrigarest.wcaquino.me/contas")
+                .then().log().all()
+        .statusCode(200)
+        .body("name", hasItem("Conta de teste"));
+    }
+
+
 }
 
 
